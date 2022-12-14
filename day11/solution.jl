@@ -3,14 +3,29 @@ include("../import_data.jl")
 struct Monkey
     index::Int
     items::Vector{Int}
-    operation
+    operation::Any
     rule_divisor::Int
     monkey_index_if_true::Int
     monkey_index_if_false::Int
     items_handled::Ref{Int}
 end
 
-Monkey(index::Int, items::Vector{Int}, operation, rule_divisor::Int, monkey_index_if_true::Int, monkey_index_if_false::Int) = Monkey(index, items, operation, rule_divisor, monkey_index_if_true, monkey_index_if_false, Ref(0))
+Monkey(
+    index::Int,
+    items::Vector{Int},
+    operation,
+    rule_divisor::Int,
+    monkey_index_if_true::Int,
+    monkey_index_if_false::Int,
+) = Monkey(
+    index,
+    items,
+    operation,
+    rule_divisor,
+    monkey_index_if_true,
+    monkey_index_if_false,
+    Ref(0),
+)
 
 function add_item(monkey::Monkey, item::Int)
     push!(monkey.items, item)
@@ -21,7 +36,8 @@ function items_handled(monkey::Monkey)::Int
 end
 
 function get_destination_index(monkey::Monkey, item::Int)::Int
-    return item % monkey.rule_divisor == 0 ? monkey.monkey_index_if_true : monkey.monkey_index_if_false
+    return item % monkey.rule_divisor == 0 ? monkey.monkey_index_if_true :
+           monkey.monkey_index_if_false
 end
 
 function parse_data_to_monkeys(data::Vector{String})::Vector{Monkey}
@@ -46,17 +62,32 @@ function parse_data_to_monkeys(data::Vector{String})::Vector{Monkey}
         else
             println("Error: unexpected operation")
         end
-        monkey_rule_divisor = parse(Int, split(data[index+3], "Test: divisible by ")[end])
+        monkey_rule_divisor =
+            parse(Int, split(data[index+3], "Test: divisible by ")[end])
         monkey_index_if_true = parse(Int, split(data[index+4])[end])
         monkey_index_if_false = parse(Int, split(data[index+5])[end])
 
         # println("monkey $(monkey_index) has $(items) and gives to monkey $(monkey_index_if_true) if divisible by $(monkey_rule_divisor) and $(monkey_index_if_false) otherwise")
-        push!(monkeys, Monkey(monkey_index, items, monkey_operation, monkey_rule_divisor, monkey_index_if_true, monkey_index_if_false))
+        push!(
+            monkeys,
+            Monkey(
+                monkey_index,
+                items,
+                monkey_operation,
+                monkey_rule_divisor,
+                monkey_index_if_true,
+                monkey_index_if_false,
+            ),
+        )
     end
     return monkeys
 end
 
-function inspect(monkey_index::Int, monkeys::Vector{Monkey}, divide_by_three::Bool=true)
+function inspect(
+    monkey_index::Int,
+    monkeys::Vector{Monkey},
+    divide_by_three::Bool = true,
+)
     monkey = monkeys[monkey_index+1]
     while length(monkey.items) > 0
         monkey.items_handled[] += 1
@@ -71,7 +102,7 @@ function inspect(monkey_index::Int, monkeys::Vector{Monkey}, divide_by_three::Bo
     end
 end
 
-function task1(example::Bool=false)::Int
+function task1(example::Bool = false)::Int
     data = import_data(11, example)
     monkeys = parse_data_to_monkeys(data)
     for round in 1:20
@@ -86,7 +117,7 @@ function task1(example::Bool=false)::Int
             println()
         end
     end
-    sorted_monkeys = sort(monkeys, by=items_handled, rev=true)
+    sorted_monkeys = sort(monkeys, by = items_handled, rev = true)
     return items_handled(sorted_monkeys[1]) * items_handled(sorted_monkeys[2])
 end
 
@@ -106,7 +137,7 @@ function reduce_all_items(monkeys::Vector{Monkey}, product::Int)
     end
 end
 
-function task2(example::Bool=false)::Int
+function task2(example::Bool = false)::Int
     data = import_data(11, example)
     monkeys = parse_data_to_monkeys(data)
     product = product_divisors(monkeys)
@@ -123,7 +154,7 @@ function task2(example::Bool=false)::Int
             println()
         end
     end
-    sorted_monkeys = sort(monkeys, by=items_handled, rev=true)
+    sorted_monkeys = sort(monkeys, by = items_handled, rev = true)
     return items_handled(sorted_monkeys[1]) * items_handled(sorted_monkeys[2])
 end
 
@@ -132,4 +163,3 @@ println("Day 11, task 1: $(task1())")
 
 println("Day 11, task 2 example: $(task2(true))")
 println("Day 11, task 2: $(task2())")
-

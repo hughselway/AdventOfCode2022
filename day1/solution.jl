@@ -2,7 +2,7 @@ using DelimitedFiles
 
 include("../import_data.jl")
 
-function get_groups(example::Bool=false)::Vector{Vector{Int}}
+function get_groups(example::Bool = false)::Vector{Vector{Int}}
     data = import_data(1, example)
 
     # create empty group and sums as lists of integers
@@ -13,22 +13,22 @@ function get_groups(example::Bool=false)::Vector{Vector{Int}}
             push!(groups, group)
             group = []
         else
-            push!(group, parse(Int,line))
+            push!(group, parse(Int, line))
         end
     end
     return groups
 end
 
-function day1_task1(example::Bool=false)::Int
+function day1_task1(example::Bool = false)::Int
     groups = get_groups(example)
     return maximum(sum.(groups))
 end
 
-function day1_task2(example=false)::Int
+function day1_task2(example = false)::Int
     groups = get_groups(example)
     sums::Vector{Int} = [sum(group) for group in groups]
     # find largest three groups by sum
-    sorted_sums = sort(sums, rev=true)
+    sorted_sums = sort(sums, rev = true)
     return sum(sorted_sums[1:3])
 end
 

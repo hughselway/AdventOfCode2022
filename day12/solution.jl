@@ -1,6 +1,8 @@
 include("../import_data.jl")
 
-function parse_map(data::Vector{String})::Tuple{Array{Int,2}, Tuple{Int,Int}, Tuple{Int,Int}}
+function parse_map(
+    data::Vector{String},
+)::Tuple{Array{Int,2},Tuple{Int,Int},Tuple{Int,Int}}
     map = Array{Int,2}(undef, length(data[1]), length(data))
     starting_position = nothing
     ending_position = nothing
@@ -20,7 +22,7 @@ function parse_map(data::Vector{String})::Tuple{Array{Int,2}, Tuple{Int,Int}, Tu
     return map, starting_position, ending_position
 end
 
-function task1(example::Bool=false)::Int
+function task1(example::Bool = false)::Int
     data = import_data(12, example)
     map, starting_position, ending_position = parse_map(data)
 
@@ -38,8 +40,9 @@ function task1(example::Bool=false)::Int
         for (dx, dy) in [(-1, 0), (1, 0), (0, -1), (0, 1)]
             x2 = x + dx
             y2 = y + dy
-            point_on_map = x2 > 0 && x2 <= size(map, 1) && y2 > 0 && y2 <= size(map, 2)
-            if point_on_map 
+            point_on_map =
+                x2 > 0 && x2 <= size(map, 1) && y2 > 0 && y2 <= size(map, 2)
+            if point_on_map
                 point_accessible = (map[x2, y2] - map[x, y] <= 1)
                 if point_accessible
                     if dist[x2, y2] > dist[x, y] + 1
@@ -53,7 +56,7 @@ function task1(example::Bool=false)::Int
     return -1
 end
 
-function task2(example::Bool=false)::Int
+function task2(example::Bool = false)::Int
     data = import_data(12, example)
     map, starting_position, ending_position = parse_map(data)
 
@@ -72,8 +75,9 @@ function task2(example::Bool=false)::Int
         for (dx, dy) in [(-1, 0), (1, 0), (0, -1), (0, 1)]
             x2 = x + dx
             y2 = y + dy
-            point_on_map = x2 > 0 && x2 <= size(map, 1) && y2 > 0 && y2 <= size(map, 2)
-            if point_on_map 
+            point_on_map =
+                x2 > 0 && x2 <= size(map, 1) && y2 > 0 && y2 <= size(map, 2)
+            if point_on_map
                 point_accessible = (map[x, y] - map[x2, y2] <= 1)
                 if point_accessible
                     if dist[x2, y2] > dist[x, y] + 1

@@ -1,11 +1,13 @@
 include("../import_data.jl")
 
-function run_rounds(example::Bool=false, task2_rules::Bool=false)::Int
+function run_rounds(example::Bool = false, task2_rules::Bool = false)::Int
     data = import_data(2, example)
     score::Int = 0
     for line in data
         them, me = split(line)
-        score += task2_rules ? get_new_rules_score(only(them), only(me)) : get_score(only(them), only(me))
+        score +=
+            task2_rules ? get_new_rules_score(only(them), only(me)) :
+            get_score(only(them), only(me))
     end
     return score
 end

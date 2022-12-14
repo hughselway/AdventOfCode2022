@@ -31,7 +31,7 @@ function update_tail(head::Coords, tail::Coords)
     end
 end
 
-function task1(example::Bool=false)::Int
+function task1(example::Bool = false)::Int
     data = import_data(9, example)
     head::Coords = Coords(0, 0)
     tail::Coords = Coords(0, 0)
@@ -45,7 +45,7 @@ function task1(example::Bool=false)::Int
         for i in 1:moves
             move_one_step(head, only(direction))
             update_tail(head, tail)
-            tail_tuple=(tail.x, tail.y)
+            tail_tuple = (tail.x, tail.y)
             if !(tail_tuple in tail_locations)
                 push!(tail_locations, tail_tuple)
             end
@@ -61,7 +61,7 @@ function print_tail_locations(head::Coords, tails::Vector{Coords})
     println()
 end
 
-function task2(example::Bool=false)::Int
+function task2(example::Bool = false)::Int
     data = import_data(9, example)
     head::Coords = Coords(0, 0)
     tails::Vector{Coords} = [Coords(0, 0) for i in 1:9]
@@ -73,11 +73,11 @@ function task2(example::Bool=false)::Int
 
         for i in 1:moves
             move_one_step(head, only(direction))
-            update_tail(head, tails[1]) 
+            update_tail(head, tails[1])
             for tail_index in 2:9
                 update_tail(tails[tail_index-1], tails[tail_index])
             end
-            tail_tuple=(tails[9].x, tails[9].y)
+            tail_tuple = (tails[9].x, tails[9].y)
             if !(tail_tuple in tail_locations)
                 push!(tail_locations, tail_tuple)
             end

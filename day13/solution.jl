@@ -38,7 +38,6 @@ function print_list(list::List)
     end
 end
 
-
 function parse_list(line::SubString{String})::Union{List,Int}
     return parse_list(String(line))
 end
@@ -86,7 +85,7 @@ function parse_list(line::String)::Union{List,Int}
 end
 
 function get_parsed_list(line::String)::List
-    list= parse_list(line[2:end-1])
+    list = parse_list(line[2:end-1])
     return list
 end
 
@@ -105,10 +104,7 @@ function in_right_order(left::List, right::Int)::Union{Bool,Nothing}
     return in_right_order(left, List([right]))
 end
 
-function in_right_order(
-    left::List,
-    right::List,
-)::Union{Bool,Nothing}
+function in_right_order(left::List, right::List)::Union{Bool,Nothing}
     if length(right.list) == 0
         if length(left.list) > 0
             return false
@@ -135,11 +131,14 @@ function in_right_order(
     error("got to the strange place!")
 end
 
-function task1(example::Bool=false)
+function task1(example::Bool = false)
     data = import_data(13, example)
     pairs::Vector{Tuple{List,List}} = []
     for index in 1:3:length(data)
-        push!(pairs, (get_parsed_list(data[index]), get_parsed_list(data[index+1])))
+        push!(
+            pairs,
+            (get_parsed_list(data[index]), get_parsed_list(data[index+1])),
+        )
     end
     pairs_in_right_order::Vector{Int} = []
     for (i, pair) in enumerate(pairs)
@@ -152,7 +151,7 @@ function task1(example::Bool=false)
     return sum(pairs_in_right_order)
 end
 
-function task2(example::Bool=false)::Int
+function task2(example::Bool = false)::Int
     data = import_data(13, example)
     lists::Vector{List} = []
     for line in data
@@ -165,23 +164,23 @@ function task2(example::Bool=false)::Int
     append!(lists, [get_parsed_list("[[2]]"), get_parsed_list("[[6]]")])
     two_index = length(lists) - 1
     six_index = length(lists)
-    changes_made::Bool=true
+    changes_made::Bool = true
     while changes_made
-        changes_made=false
+        changes_made = false
         for (i, list) in enumerate(lists[1:end-1])
             if in_right_order(list, lists[i+1]) === false
                 temp = lists[i+1]
                 lists[i+1] = lists[i]
                 lists[i] = temp
-                changes_made=true
+                changes_made = true
                 if i == two_index
-                    two_index = i+1
-                elseif i+1 == two_index
+                    two_index = i + 1
+                elseif i + 1 == two_index
                     two_index = i
                 end
                 if i == six_index
-                    six_index = i+1
-                elseif i+1 == six_index
+                    six_index = i + 1
+                elseif i + 1 == six_index
                     six_index = i
                 end
             end
@@ -192,7 +191,6 @@ function task2(example::Bool=false)::Int
     println("2_index=$two_index, 6_index=$six_index")
     return two_index * six_index
 end
-
 
 println("Day 13, task 1 example: ", task1(true))
 println()
